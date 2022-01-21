@@ -14,8 +14,8 @@ jobs:
       matrix:
         # TODO: 3.10 in GH Actions is not yet stable enough for us
         # You may often encounter "Error: Process completed with exit code 250."
-        # python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
-        python-version: ['3.6', '3.7', '3.8', '3.9']
+        # python-version: ['3.8']
+        python-version: ['3.8']
     env:
       PYTHON_SLACK_SDK_MOCK_SERVER_MODE: 'threading'
       #CI_UNSTABLE_TESTS_SKIP_ENABLED: '1'
@@ -33,9 +33,9 @@ jobs:
     - name: Run validation
       run: |
         python setup.py validate
-    - name: Run codecov (only 3.9)
+    - name: Run codecov (only 3.8)
       run: |
         python_version=`python -V`
-        if [ ${python_version:7:3} == "3.9" ]; then
+        if [ ${python_version:7:3} == "3.8" ]; then
           codecov -e ${python_version:7}
         fi

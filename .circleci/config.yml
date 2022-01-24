@@ -1,0 +1,44 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@1.5.0
+
+jobs:
+  manylinux2014-aarch64:
+    parameters:
+      cibw_build:
+        type: string
+        default: "cp37-*"
+
+    machine:
+      image: ubuntu-2004:202101-01
+    resource_class: arm.medium
+   
+    steps:
+      - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
+      - run:
+          name: Build image
+          command: |
+            source .ci/ubuntu_ci.sh
+            update_version_metadata
+      - run:
+          name: Install dependencies
+          command: |
+            python3 -m pip install --upgrade pip==21.2.4
+            python3 -m pip install cibuildwheel==2.1.2
+      - run:
+          name: test
+          command: |
+            python setup.py validate
+
+workflows:
+  version: 2.1
+  main:
+    jobs:
+      - manylinux2014-aarch64:
+          matrix:
+            parameters:
+              cibw_build:
+                - "cp37*"

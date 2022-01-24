@@ -26,13 +26,13 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            python3 -m pip install --upgrade pip==21.2.4
-            python3 -m pip install cibuildwheel==2.1.2
+             pip install -U pip wheel
+             pip install -e ".[testing]"
+             pip install -e ".[optional]"
       - run:
           name: test
           command: |
             python setup.py validate
-
 workflows:
   version: 2.1
   main:
